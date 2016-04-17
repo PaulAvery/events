@@ -1,1 +1,1 @@
-# @paulavery/module-template - A template for node modules
+# @paulavery/events - EventEmitter with Promise support

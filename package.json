@@ -1,7 +1,7 @@
 {
-  "name": "@paulavery/module-template",
+  "name": "@paulavery/events",
   "version": "0.0.0",
-  "description": "A template for node modules",
+  "description": "EventEmitter with Promise support",
   "main": "lib/index.js",
   "license": "BSD-3-Clause",
   "author": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PaulAvery/module-template.git"
+    "url": "https://github.com/PaulAvery/events.git"
   },
   "devDependencies": {
     "@paulavery/docs": "^1.0.0",
