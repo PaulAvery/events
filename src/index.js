@@ -12,10 +12,15 @@ export default class EventEmitter {
 	 */
 	child(scope) {
 		let path = scope.split(EventEmitter.DELIMITER);
-		let emitter = new EventEmitter(path.shift(), this);
+		let emitter = new EventEmitter(path[0], this);
 
-		if(path.length > 0) {
-			return emitter.child(path.join(EventEmitter.DELIMITER));
+		this.on(
+			`${path[0]}${EventEmitter.DELIMITER}${EventEmitter.WILDCARD}`,
+			(pth, ...args) => emitter.emitDirect(pth.slice(1), ...args)
+		);
+
+		if(path.length > 1) {
+			return emitter.child(path.slice(1).join(EventEmitter.DELIMITER));
 		} else {
 			return emitter;
 		}
@@ -30,7 +35,6 @@ export default class EventEmitter {
 	catch(listener) {
 		this.catcher = listener;
 	}
-
 
 	/* Create a new scope object */
 	createScope() {
@@ -111,14 +115,18 @@ export default class EventEmitter {
 		/* Go through a single scope and recursively remove all instances of the listener */
 		let iteration = scope => {
 			/* If we find the listener, remove it */
-			scope[EventEmitter.DELIMITER].forEach((l, i) => {
-				if(l === listener) {
-					scope[EventEmitter.DELIMITER].splice(i, 1);
-				}
-			});
+			if(scope[EventEmitter.DELIMITER]) {
+				scope[EventEmitter.DELIMITER].forEach((l, i) => {
+					if(l === listener) {
+						scope[EventEmitter.DELIMITER].splice(i, 1);
+					}
+				});
+			}
 
 			/* For all keys which are not the delimiter key, remove all keys */
-			Object.keys(scope).filter(s => s !== EventEmitter.DELIMITER).forEach(iteration);
+			Object.keys(scope)
+				.filter(s => s !== EventEmitter.DELIMITER)
+				.forEach(s => iteration(scope[s]));
 		};
 
 		/* Start the removal at the top-level */
@@ -136,12 +144,17 @@ export default class EventEmitter {
 	/* Emit a given event and call all handlers with the given arguments */
 	emit(event, ...args) {
 		if(this.parent) {
-			/* Emit the correct events on the parent */
-			this.parent.emit(`${this.scope}${EventEmitter.DELIMITER}${event}`, ...args);
+			/* Bubble event up if parent is available */
+			return this.parent.emit(`${this.scope}${EventEmitter.DELIMITER}${event}`, ...args);
+		} else {
+			/* Otherwise, chain downwards */
+			return this.emitDirect(event.split(EventEmitter.DELIMITER), ...args);
 		}
+	}
 
+	/* Emit event downwards */
+	emitDirect(path, ...args) {
 		/* Extract listeners */
-		let path = event.split(EventEmitter.DELIMITER);
 		let listeners = this.getScopeListeners(path);
 
 		/* Call them properly */

@@ -58,6 +58,14 @@ test('Default delimiter is :', t => {
 	t.is(EventEmitter.DELIMITER, ':');
 });
 
+test('Wildcard at position other than last throws', t => {
+	let e = new EventEmitter();
+	t.throws(() => e.on('a.*.c'));
+	t.throws(() => e.on('*.b'));
+	t.notThrows(() => e.on('*'));
+	t.notThrows(() => e.on('a.*'));
+});
+
 test.group('Scoped events', test => {
 	test('are emitted to exact handlers', async t => {
 		let e = new EventEmitter();
