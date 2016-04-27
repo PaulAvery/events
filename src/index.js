@@ -171,13 +171,15 @@ export default class EventEmitter {
 		});
 
 		/* Return once all listeners are done */
-		return Promise.all(promises).catch(error => {
-			if(this.catcher) {
-				this.catcher(error);
-			}
+		return Promise.all(promises.map(
+			promise => promise.catch(error => {
+				if(this.catcher) {
+					this.catcher(error);
+				}
 
-			throw error;
-		});
+				throw error;
+			})
+		));
 	}
 }
 
