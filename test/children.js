@@ -14,6 +14,20 @@ test.group('child() method creates a child, which', test => {
 		}
 	});
 
+	test('calls its handlers with this set to the root emitter', async t => {
+		let e = new EventEmitter();
+		let child = e.child('nested');
+		let deeperChild = child.child('scope');
+
+		t.plan(6);
+		child.on('scope:event', function() { t.is(this, e); });
+		deeperChild.on('event', function() { t.is(this, e); });
+
+		await e.emit('nested:scope:event');
+		await child.emit('scope:event');
+		await deeperChild.emit('event');
+	});
+
 	test.group('properly has a scope set, if', test => {
 		test('simple scope is passed', async t => {
 			let e = new EventEmitter();
