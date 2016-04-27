@@ -36,7 +36,7 @@ The `EventEmitter.WILDCARD` specifies which character should be used to match an
 **Example:**
 
 ```js
-EventEmitter.DELIMITER = '.';
+EventEmitter.WILDCARD = '?';
 
 let e = new EventEmitter();
 e.on('scoped:?', doSomething);
