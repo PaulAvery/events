@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>@paulavery/events</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="assets/css/deps/normalize.css">
+	<link rel="stylesheet" href="assets/css/deps/cayman.css">
+	<link rel="stylesheet" href="assets/css/highlight.css">
+	<link rel="stylesheet" href="assets/css/header.css">
+	<link rel="stylesheet" href="assets/css/menu.css">
+	<link rel="stylesheet" href="assets/css/docs.css">
+
+	<script src="assets/js/collapse.js"></script>
+	<script src="assets/ js/reload.js"></script>
+</head>
+<body class="collapsed">
+	<div class="page-wrap">
+		<section class="page-header placeholder">
+			<div><h1 class="project-name">@paulavery/events</h1></div>
+			<h2 class="project-tagline">EventEmitter with Promise support</h2>
+			<nav class="main-menu">
+				<ul>
+					<li><a href="./" class="active">Introduction</a></li>
+							<li><a href="api/eventemitter/" >API</a></li>
+				</ul>
+			</nav>
+		</section>
+		<section class="page-header">
+			<div><h1 class="project-name">@paulavery/events</h1></div>
+			<h2 class="project-tagline">EventEmitter with Promise support</h2>
+			<nav class="main-menu">
+				<ul>
+					<li><a href="./" class="active">Introduction</a></li>
+							<li><a href="api/eventemitter/" >API</a></li>
+				</ul>
+			</nav>
+		</section>
+		<div class="main-column">
+			<section class="main-content">
+				<h1>Introduction</h1>
+<p>Yes, this is yet another EventEmitter.<br>
+It can deal with scopes as well as promises, but it is mostly used by me as a testbed for my buildsystem and for my private projects.</p>
+<p>So here we go with a short example:</p>
+<pre class="editor editor-colors"><div class="line"><span class="text plain null-grammar"><span>import&nbsp;EventEmitter&nbsp;from&nbsp;&#39;@paulavery/events&#39;;</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>let&nbsp;emitter&nbsp;=&nbsp;new&nbsp;EventEmitter();</span></span></div><div class="line"><span class="text plain null-grammar"><span>let&nbsp;scope&nbsp;=&nbsp;emitter.child(&#39;scope&#39;);</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>emitter.on(&#39;scope:event&#39;,&nbsp;message&nbsp;=&gt;&nbsp;console.log(&#39;1.&nbsp;&#39;&nbsp;+&nbsp;message));</span></span></div><div class="line"><span class="text plain null-grammar"><span>emitter.on(&#39;scope:*&#39;,&nbsp;(path,&nbsp;message)&nbsp;=&gt;&nbsp;console.log(&#39;2.&nbsp;&#39;&nbsp;+&nbsp;message));</span></span></div><div class="line"><span class="text plain null-grammar"><span>scope.on(&#39;event&#39;,&nbsp;message&nbsp;=&gt;&nbsp;console.log(&#39;3.&nbsp;&#39;&nbsp;+&nbsp;message));</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>emitter.emit(&#39;scope:event&#39;,&nbsp;&#39;MESSAGE!&#39;).then(()&nbsp;=&gt;&nbsp;console.log(&#39;Done&#39;));</span></span></div></pre>
+<p>The above will log:</p>
+<pre class="editor editor-colors"><div class="line"><span class="text plain null-grammar"><span>1.&nbsp;MESSAGE!</span></span></div><div class="line"><span class="text plain null-grammar"><span>2.&nbsp;MESSAGE!</span></span></div><div class="line"><span class="text plain null-grammar"><span>3.&nbsp;MESSAGE!</span></span></div><div class="line"><span class="text plain null-grammar"><span>Done</span></span></div></pre>
+<p>Ordering of the three messages may vary, but they <strong>will</strong> execute before the logging of <code>Done</code>.</p>
+
+			</section>
+		</div>
+	</div>
+	<footer class="site-footer">
+		<div>
+			<span class="site-footer-owner"><a href="">@paulavery/events</a> is maintained by <a href="https://github.com/PaulAvery/">Florian Albertz</a>.</span>
+			<span class="site-footer-credits">This page uses a modified version of the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+		</div>
+	</footer>
+</body>
+</html>

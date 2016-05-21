@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>off()</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="../../assets/css/deps/normalize.css">
+	<link rel="stylesheet" href="../../assets/css/deps/cayman.css">
+	<link rel="stylesheet" href="../../assets/css/highlight.css">
+	<link rel="stylesheet" href="../../assets/css/header.css">
+	<link rel="stylesheet" href="../../assets/css/menu.css">
+	<link rel="stylesheet" href="../../assets/css/docs.css">
+
+	<script src="../../assets/js/collapse.js"></script>
+	<script src="../../assets/ js/reload.js"></script>
+</head>
+<body class="collapsed">
+	<div class="page-wrap">
+		<section class="page-header placeholder">
+			<div><h1 class="project-name">@paulavery/events</h1></div>
+			<h2 class="project-tagline">EventEmitter with Promise support</h2>
+			<nav class="main-menu">
+				<ul>
+					<li><a href="./../../" >Introduction</a></li>
+							<li><a href="../../api/eventemitter/" class="active">API</a></li>
+				</ul>
+			</nav>
+		</section>
+		<section class="page-header">
+			<div><h1 class="project-name">@paulavery/events</h1></div>
+			<h2 class="project-tagline">EventEmitter with Promise support</h2>
+			<nav class="main-menu">
+				<ul>
+					<li><a href="./../../" >Introduction</a></li>
+							<li><a href="../../api/eventemitter/" class="active">API</a></li>
+				</ul>
+			</nav>
+		</section>
+		<div class="main-column">
+				<nav class="sub-menu">
+						<ul class="category-list">
+							<li class="category ">
+								<div class="dot"></div>
+								<a href="../../api/eventemitter/">EventEmitter</a>
+							</li>
+								<li class="page child ">
+									<div class="dot"></div>
+									<a href="../../api/eventemitter/catch.html">catch()</a>
+								</li>
+								<li class="page child ">
+									<div class="dot"></div>
+									<a href="../../api/eventemitter/child.html">child()</a>
+								</li>
+								<li class="page child ">
+									<div class="dot"></div>
+									<a href="../../api/eventemitter/emit.html">emit()</a>
+								</li>
+								<li class="page child active">
+									<div class="dot"></div>
+									<a href="../../api/eventemitter/off.html">off()</a>
+								</li>
+								<li class="page child ">
+									<div class="dot"></div>
+									<a href="../../api/eventemitter/on.html">on()</a>
+								</li>
+								<li class="page child ">
+									<div class="dot"></div>
+									<a href="../../api/eventemitter/once.html">once()</a>
+								</li>
+								<li class="page child ">
+									<div class="dot"></div>
+									<a href="../../api/eventemitter/wait.html">wait()</a>
+								</li>
+						</ul>
+				</nav>
+			<section class="main-content">
+				<h1>.off(handler)</h1>
+<p>Removes a given handler from all events.</p>
+<pre class="editor editor-colors"><div class="line"><span class="text plain null-grammar"><span>let&nbsp;e&nbsp;=&nbsp;new&nbsp;EventEmitter();</span></span></div><div class="line"><span class="text plain null-grammar"><span>let&nbsp;handler&nbsp;=&nbsp;message&nbsp;=&gt;&nbsp;console.log(message);</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>e.on(&#39;event&#39;,&nbsp;handler);</span></span></div><div class="line"><span class="text plain null-grammar"><span>e.emit(&#39;event&#39;,&nbsp;&#39;This&nbsp;will&nbsp;be&nbsp;logged&#39;);</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>e.off(handler);</span></span></div><div class="line"><span class="text plain null-grammar"><span>e.emit(&#39;event&#39;,&nbsp;&#39;This&nbsp;won\&#39;t&#39;);</span></span></div></pre>
+
+			</section>
+		</div>
+	</div>
+	<footer class="site-footer">
+		<div>
+			<span class="site-footer-owner"><a href="">@paulavery/events</a> is maintained by <a href="https://github.com/PaulAvery/">Florian Albertz</a>.</span>
+			<span class="site-footer-credits">This page uses a modified version of the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+		</div>
+	</footer>
+</body>
+</html>
