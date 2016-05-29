@@ -81,17 +81,17 @@
 <p>The only thing exported from this module is the <code>EventEmitter</code> class.<br>
 Its constructor takes no arguments and it can be extended to give EventEmitter functionality to your own classes:</p>
 <pre class="editor editor-colors"><div class="line"><span class="text plain null-grammar"><span>import&nbsp;EventEmitter&nbsp;from&nbsp;&#39;@paulavery/events&#39;;</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>class&nbsp;MyEventEmitter&nbsp;extends&nbsp;EventEmitter&nbsp;{</span></span></div><div class="line"><span class="text plain null-grammar"><span>	constructor()&nbsp;{</span></span></div><div class="line"><span class="text plain null-grammar"><span>		super();</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>		this.on(&#39;some:event&#39;,&nbsp;doSomething);</span></span></div><div class="line"><span class="text plain null-grammar"><span>	}</span></span></div><div class="line"><span class="text plain null-grammar"><span>}</span></span></div></pre>
-<h2>Constants</h2>
-<p>The <code>EventEmitter</code> class has two constants attached to allow some slight configuration.<br>
-If you decide to override them, do so before instantiating any emitter.</p>
-<h3>DELIMITER</h3>
-<p>The <code>EventEmitter.DELIMITER</code> specifies which character should be used to split scopes. It defaults to <code>:</code>.</p>
+<h2>Options</h2>
+<p>The <code>EventEmitter</code> class takes an options object as its first parameter. Any <a href="./child.html">children</a> will inherit these options.<br>
+The following options are available:</p>
+<h3>delimiter</h3>
+<p>The <code>delimiter</code> property specifies which character should be used to split scopes. It defaults to <code>:</code>.</p>
 <p><strong>Example:</strong></p>
-<pre class="editor editor-colors"><div class="line"><span class="text plain null-grammar"><span>EventEmitter.DELIMITER&nbsp;=&nbsp;&#39;.&#39;;</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>let&nbsp;e&nbsp;=&nbsp;new&nbsp;EventEmitter();</span></span></div><div class="line"><span class="text plain null-grammar"><span>e.on(&#39;scoped.event&#39;,&nbsp;doSomething);</span></span></div></pre>
-<h3>WILDCARD</h3>
-<p>The <code>EventEmitter.WILDCARD</code> specifies which character should be used to match any lower scope. It defaults to <code>*</code>.</p>
+<pre class="editor editor-colors"><div class="line"><span class="text plain null-grammar"><span>let&nbsp;e&nbsp;=&nbsp;new&nbsp;EventEmitter({&nbsp;delimiter:&nbsp;&#39;.&#39;&nbsp;});</span></span></div><div class="line"><span class="text plain null-grammar"><span>e.on(&#39;scoped.event&#39;,&nbsp;doSomething);</span></span></div></pre>
+<h3>wildcard</h3>
+<p>The <code>wildcard</code> property specifies which character should be used to match any lower scope. It defaults to <code>*</code>.</p>
 <p><strong>Example:</strong></p>
-<pre class="editor editor-colors"><div class="line"><span class="text plain null-grammar"><span>EventEmitter.WILDCARD&nbsp;=&nbsp;&#39;?&#39;;</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>let&nbsp;e&nbsp;=&nbsp;new&nbsp;EventEmitter();</span></span></div><div class="line"><span class="text plain null-grammar"><span>e.on(&#39;scoped:?&#39;,&nbsp;doSomething);</span></span></div></pre>
+<pre class="editor editor-colors"><div class="line"><span class="text plain null-grammar"><span>EventEmitter.WILDCARD&nbsp;=&nbsp;&#39;?&#39;;</span></span></div><div class="line"><span class="text plain null-grammar"><span>&nbsp;</span></span></div><div class="line"><span class="text plain null-grammar"><span>let&nbsp;e&nbsp;=&nbsp;new&nbsp;EventEmitter({&nbsp;wildcard:&nbsp;&#39;?&#39;&nbsp;});</span></span></div><div class="line"><span class="text plain null-grammar"><span>e.on(&#39;scoped:?&#39;,&nbsp;doSomething);</span></span></div></pre>
 
 			</section>
 		</div>
