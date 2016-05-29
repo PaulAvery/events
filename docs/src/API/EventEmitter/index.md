@@ -14,30 +14,28 @@ class MyEventEmitter extends EventEmitter {
 }
 ```
 
-## Constants
-The `EventEmitter` class has two constants attached to allow some slight configuration.
-If you decide to override them, do so before instantiating any emitter.
+## Options
+The `EventEmitter` class takes an options object as its first parameter. Any [children](child().md) will inherit these options.
+The following options are available:
 
-### DELIMITER
-The `EventEmitter.DELIMITER` specifies which character should be used to split scopes. It defaults to `:`.
+### delimiter
+The `delimiter` property specifies which character should be used to split scopes. It defaults to `:`.
 
 **Example:**
 
 ```js
-EventEmitter.DELIMITER = '.';
-
-let e = new EventEmitter();
+let e = new EventEmitter({ delimiter: '.' });
 e.on('scoped.event', doSomething);
 ```
 
-### WILDCARD
-The `EventEmitter.WILDCARD` specifies which character should be used to match any lower scope. It defaults to `*`.
+### wildcard
+The `wildcard` property specifies which character should be used to match any lower scope. It defaults to `*`.
 
 **Example:**
 
 ```js
 EventEmitter.WILDCARD = '?';
 
-let e = new EventEmitter();
+let e = new EventEmitter({ wildcard: '?' });
 e.on('scoped:?', doSomething);
 ```

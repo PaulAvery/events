@@ -1,9 +1,12 @@
+import merge from 'merge-deep';
+
 export default class EventEmitter {
 	/* Set up scope, parent and listeners */
-	constructor(scope, parent) {
-		this.scope = scope;
-		this.parent = parent;
+	constructor(options, scope, parent) {
 		this.listeners = {};
+		this.options = merge({ delimiter: ':', wildcard: '*' }, options);
+		this.parent = parent;
+		this.scope = scope;
 	}
 
 	/*
@@ -11,16 +14,16 @@ export default class EventEmitter {
 	 * Anything emitted here will also be emitted on the parent
 	 */
 	child(scope) {
-		let path = scope.split(EventEmitter.DELIMITER);
-		let emitter = new EventEmitter(path[0], this);
+		let path = scope.split(this.options.delimiter);
+		let emitter = new this.constructor(this.options, path[0], this);
 
 		this.on(
-			`${path[0]}${EventEmitter.DELIMITER}${EventEmitter.WILDCARD}`,
+			`${path[0]}${this.options.delimiter}${this.options.wildcard}`,
 			(pth, ...args) => emitter.emitDirect(pth.slice(1), ...args)
 		);
 
 		if(path.length > 1) {
-			return emitter.child(path.slice(1).join(EventEmitter.DELIMITER));
+			return emitter.child(path.slice(1).join(this.options.delimiter));
 		} else {
 			return emitter;
 		}
@@ -41,7 +44,7 @@ export default class EventEmitter {
 		let scope = {};
 
 		/* Create array for the handlers attached to this scope */
-		scope[EventEmitter.DELIMITER] = [];
+		scope[this.options.delimiter] = [];
 
 		return scope;
 	}
@@ -52,8 +55,8 @@ export default class EventEmitter {
 
 		let scope = path.reduce((current, step) => {
 			/* Add wildcard listeners */
-			if(current[EventEmitter.WILDCARD]) {
-				listeners = listeners.concat(current[EventEmitter.WILDCARD][EventEmitter.DELIMITER].map(l => {
+			if(current[this.options.wildcard]) {
+				listeners = listeners.concat(current[this.options.wildcard][this.options.delimiter].map(l => {
 					return {
 						listener: l,
 						wildcard: true
@@ -66,7 +69,7 @@ export default class EventEmitter {
 		}, this.listeners);
 
 		/* Return all wildcard listeners as well as the normal ones */
-		return listeners.concat(scope[EventEmitter.DELIMITER].map(l => {
+		return listeners.concat(scope[this.options.delimiter].map(l => {
 			return {
 				listener: l,
 				wildcard: false
@@ -77,20 +80,20 @@ export default class EventEmitter {
 	/* Attach a listener */
 	on(event, handler) {
 		/* Check for invalid wildcard (can only be at last position)*/
-		let wildcardPosition = event.indexOf(EventEmitter.WILDCARD);
+		let wildcardPosition = event.indexOf(this.options.wildcard);
 		if(wildcardPosition !== -1 && wildcardPosition !== event.length - 1) {
-			throw new Error(`Wildcard "${EventEmitter.WILDCARD}" found at index ${wildcardPosition} of event "${event}". Only allowed at end of string!`);
+			throw new Error(`Wildcard "${this.options.wildcard}" found at index ${wildcardPosition} of event "${event}". Only allowed at end of string!`);
 		}
 
 		/* Get to our scope */
-		let path = event.split(EventEmitter.DELIMITER);
+		let path = event.split(this.options.delimiter);
 		let scope = path.reduce((current, step) => {
 			current[step] = current[step] || this.createScope();
 			return current[step];
 		}, this.listeners);
 
 		/* Add the handler */
-		scope[EventEmitter.DELIMITER].push(handler);
+		scope[this.options.delimiter].push(handler);
 	}
 
 	/* Attach a handler once */
@@ -115,17 +118,17 @@ export default class EventEmitter {
 		/* Go through a single scope and recursively remove all instances of the listener */
 		let iteration = scope => {
 			/* If we find the listener, remove it */
-			if(scope[EventEmitter.DELIMITER]) {
-				scope[EventEmitter.DELIMITER].forEach((l, i) => {
+			if(scope[this.options.delimiter]) {
+				scope[this.options.delimiter].forEach((l, i) => {
 					if(l === listener) {
-						scope[EventEmitter.DELIMITER].splice(i, 1);
+						scope[this.options.delimiter].splice(i, 1);
 					}
 				});
 			}
 
 			/* For all keys which are not the delimiter key, remove all keys */
 			Object.keys(scope)
-				.filter(s => s !== EventEmitter.DELIMITER)
+				.filter(s => s !== this.options.delimiter)
 				.forEach(s => iteration(scope[s]));
 		};
 
@@ -145,10 +148,10 @@ export default class EventEmitter {
 	emit(event, ...args) {
 		if(this.parent) {
 			/* Bubble event up if parent is available */
-			return this.parent.emit(`${this.scope}${EventEmitter.DELIMITER}${event}`, ...args);
+			return this.parent.emit(`${this.scope}${this.options.delimiter}${event}`, ...args);
 		} else {
 			/* Otherwise, chain downwards */
-			return this.emitDirect(event.split(EventEmitter.DELIMITER), ...args);
+			return this.emitDirect(event.split(this.options.delimiter), ...args);
 		}
 	}
 
@@ -182,6 +185,3 @@ export default class EventEmitter {
 		));
 	}
 }
-
-EventEmitter.DELIMITER = ':';
-EventEmitter.WILDCARD = '*';

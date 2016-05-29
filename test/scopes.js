@@ -2,21 +2,15 @@
 import test from 'ava-spec';
 import EventEmitter from '../src';
 
-let wc = EventEmitter.WILDCARD;
-let delim = EventEmitter.DELIMITER;
-
-test.afterEach(() => {
-	EventEmitter.WILDCARD = wc;
-	EventEmitter.DELIMITER = delim;
-});
+let wc = '*';
+let delim = ':';
 
 function wildcardTests(test, wc, delim) {
+	let options = { wildcard: wc, delimiter: delim };
+
 	test.group('are emitted to wildcard handlers', test => {
 		test.serial('at top level', async t => {
-			EventEmitter.WILDCARD = wc;
-			EventEmitter.DELIMITER = delim;
-
-			let e = new EventEmitter();
+			let e = new EventEmitter(options);
 
 			t.plan(1);
 			e.on(wc, () => t.pass());
@@ -25,10 +19,7 @@ function wildcardTests(test, wc, delim) {
 		});
 
 		test.serial('at intermediate level', async t => {
-			EventEmitter.WILDCARD = wc;
-			EventEmitter.DELIMITER = delim;
-
-			let e = new EventEmitter();
+			let e = new EventEmitter(options);
 
 			t.plan(1);
 			e.on(`event${delim}${wc}`, () => t.pass());
@@ -37,10 +28,7 @@ function wildcardTests(test, wc, delim) {
 		});
 
 		test.serial('at closest level', async t => {
-			EventEmitter.WILDCARD = wc;
-			EventEmitter.DELIMITER = delim;
-
-			let e = new EventEmitter();
+			let e = new EventEmitter(options);
 
 			t.plan(1);
 			e.on(`event${delim}scope1${delim}${wc}`, () => t.pass());
@@ -51,15 +39,20 @@ function wildcardTests(test, wc, delim) {
 }
 
 test('Default wildcard is *', t => {
-	t.is(EventEmitter.WILDCARD, '*');
+	let emitter = new EventEmitter();
+
+	t.is(emitter.options.wildcard, '*');
 });
 
 test('Default delimiter is :', t => {
-	t.is(EventEmitter.DELIMITER, ':');
+	let emitter = new EventEmitter();
+
+	t.is(emitter.options.delimiter, ':');
 });
 
 test('Wildcard at position other than last throws', t => {
 	let e = new EventEmitter();
+
 	t.throws(() => e.on('a.*.c'));
 	t.throws(() => e.on('*.b'));
 	t.notThrows(() => e.on('*'));

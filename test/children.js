@@ -28,6 +28,26 @@ test.group('child() method creates a child, which', test => {
 		await deeperChild.emit('event');
 	});
 
+	test('inherits the delimiter', async t => {
+		let e = new EventEmitter({ delimiter: '.' });
+		let child = e.child('nested');
+
+		t.plan(1);
+		child.on('*', pth => t.deepEqual(pth, ['scope', 'event']));
+
+		await child.emit('scope.event');
+	});
+
+	test('inherits the wildcard', async t => {
+		let e = new EventEmitter({ wildcard: '?' });
+		let child = e.child('nested');
+
+		t.plan(1);
+		child.on('?', pth => t.deepEqual(pth, ['scope', 'event']));
+
+		await child.emit('scope:event');
+	});
+
 	test.group('properly has a scope set, if', test => {
 		test('simple scope is passed', async t => {
 			let e = new EventEmitter();
