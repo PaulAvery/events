@@ -1,6 +1,6 @@
 {
   "name": "@paulavery/events",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "EventEmitter with Promise support",
   "main": "lib/index.js",
   "license": "BSD-3-Clause",
