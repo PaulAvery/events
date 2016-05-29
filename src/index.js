@@ -1,10 +1,10 @@
-import merge from 'merge-deep';
+import merge from 'deepmerge';
 
 export default class EventEmitter {
 	/* Set up scope, parent and listeners */
 	constructor(options, scope, parent) {
 		this.listeners = {};
-		this.options = merge({ delimiter: ':', wildcard: '*' }, options);
+		this.options = merge({ delimiter: ':', wildcard: '*' }, options || {});
 		this.parent = parent;
 		this.scope = scope;
 	}

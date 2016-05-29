@@ -27,6 +27,6 @@
   },
   "dependencies": {
     "babel-runtime": "^6.6.1",
-    "merge-deep": "^3.0.0"
+    "deepmerge": "^0.2.10"
   }
 }
