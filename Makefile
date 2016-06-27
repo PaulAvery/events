@@ -68,7 +68,9 @@ $(DOCS_OUT)/.git:
 ifeq ($(RUN_DOCS), true)
 	@echo '### Fetching $(DOCS_BRANCH) branch from remote'
 	@rm --preserve-root -rf $(DOCS_OUT)
-	@git clone -b $(DOCS_BRANCH) `git remote get-url origin` $(DOCS_OUT)
+	@mkdir $(DOCS_OUT)
+	@cp -r .git $(DOCS_OUT)/.git
+	@cd $(DOCS_OUT) && git fetch --all && (git checkout $(DOCS_BRANCH) || git checkout --orphan $(DOCS_BRANCH))
 endif
 
 # Build documentation
@@ -94,7 +96,7 @@ ifeq ($(RUN_DOCS), true)
 	@cd $(DOCS_OUT) && git add -A
 	@cd $(DOCS_OUT) && git diff-index --quiet HEAD || (echo '### Commiting documentation' && git commit -m 'Rebuild documentation '`cd ../ && git rev-parse HEAD`)
 	@echo '### Pushing documentation'
-	@cd $(DOCS_OUT) && git push
+	@cd $(DOCS_OUT) && git push --set-upstream origin $(DOCS_BRANCH)
 endif
 
 ## Project Management
@@ -136,4 +138,4 @@ publish: | clean check-commit build test publish-docs
 	@echo '### Pushing to git remote'
 	@git push --tags origin HEAD:master
 	@echo '### Publishing to npm'
-	@npm publish
+	@npm publish --access public
