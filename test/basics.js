@@ -43,10 +43,16 @@ test('wait() returns a promise, which is resolved on emitted event', async t => 
 	let e = new EventEmitter();
 
 	t.plan(1);
-	e.wait('success').then(() => t.pass());
+	e.wait('success').then(args => {
+		if(args[0] === '1' && args[1] === 'A') {
+			t.pass();
+		} else {
+			t.fail();
+		}
+	});
 	e.wait('fail').then(() => t.fail());
 
-	await e.emit('success');
+	await e.emit('success', '1', 'A');
 });
 
 test('Errors in handlers are caught by a callback assigned via catch()', async t => {
